@@ -6,6 +6,10 @@ package me.czvn.blelibrary.utils;
  */
 public final class MsgCommonUtil {
 
+    private MsgCommonUtil(){
+
+    }
+
     public static byte[] merge(byte[] bytes1, byte[] bytes2) {
         int length1 = bytes1.length;
         int length2 = bytes2.length;
