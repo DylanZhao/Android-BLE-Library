@@ -1,7 +1,5 @@
 package me.czvn.blelibrary.utils;
 
-import me.czvn.blelibrary.interfaces.ISender;
-
 /**
  * Created by andy on 2016/1/13.
  *
@@ -40,5 +38,9 @@ public final class MsgSender {
             rests[i] = bytes[i + counter * size];
         }
         sender.inputData(rests);
+    }
+
+    public interface ISender{
+        void inputData(byte[] bytes);
     }
 }

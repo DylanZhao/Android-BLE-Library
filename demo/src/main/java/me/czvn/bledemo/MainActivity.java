@@ -27,9 +27,7 @@ import me.czvn.blelibrary.bluetooth.BLEAdvertiser;
 import me.czvn.blelibrary.bluetooth.BLEClient;
 import me.czvn.blelibrary.bluetooth.BLEScanner;
 import me.czvn.blelibrary.bluetooth.BLEServer;
-import me.czvn.blelibrary.interfaces.IAdvertiseResultListener;
-import me.czvn.blelibrary.interfaces.IBLECallback;
-import me.czvn.blelibrary.interfaces.IScanResultListener;
+import me.czvn.blelibrary.bluetooth.IBLECallback;
 
 /**
  * Created by andy on 2016/2/26.
@@ -161,7 +159,7 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     private void initData() {
         bleClient = new BLEClient(this, this);
         bleServer = BLEServer.getInstance(this, this);
-        bleAdvertiser = BLEAdvertiser.getInstance(this, new IAdvertiseResultListener() {
+        bleAdvertiser = BLEAdvertiser.getInstance(this, new BLEAdvertiser.IAdvertiseResultListener() {
             @Override
             public void onAdvertiseSuccess() {
                 if (LOG_DEBUG) {
@@ -176,7 +174,7 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
                 }
             }
         });
-        bleScanner = BLEScanner.getInstance(this, new IScanResultListener() {
+        bleScanner = BLEScanner.getInstance(this, new BLEScanner.IScanResultListener() {
             @Override
             public void onResultReceived(String deviceName, String deviceAddress) {
                 scanList.add(new ScanData(deviceName, deviceAddress));
@@ -288,7 +286,7 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
 
     //显示通知
     private void makeToast(final String toast) {
-        btnSendMsg.post(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();

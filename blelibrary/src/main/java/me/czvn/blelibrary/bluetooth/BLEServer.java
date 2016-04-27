@@ -12,9 +12,6 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
 
-import me.czvn.blelibrary.interfaces.IBLECallback;
-import me.czvn.blelibrary.interfaces.IReceiver;
-import me.czvn.blelibrary.interfaces.ISender;
 import me.czvn.blelibrary.utils.MsgReceiver;
 import me.czvn.blelibrary.utils.MsgSender;
 
@@ -117,7 +114,7 @@ public final class BLEServer {
 
     private BLEServer(Context context) {
         contextWeakReference = new WeakReference<>(context);
-        msgSender = new MsgSender(new ISender() {
+        msgSender = new MsgSender(new MsgSender.ISender() {
             //发送数据（byte[]）的地方
             @Override
             public void inputData(byte[] bytes) {
@@ -128,7 +125,7 @@ public final class BLEServer {
                 }
             }
         });
-        msgReceiver = new MsgReceiver(new IReceiver() {
+        msgReceiver = new MsgReceiver(new MsgReceiver.IReceiver() {
             //String从这里整合过来
             @Override
             public void receiveMessage(String msg) {

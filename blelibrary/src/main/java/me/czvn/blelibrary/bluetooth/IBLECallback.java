@@ -1,4 +1,4 @@
-package me.czvn.blelibrary.interfaces;
+package me.czvn.blelibrary.bluetooth;
 
 /**
  * Created by andy on 2016/1/14.

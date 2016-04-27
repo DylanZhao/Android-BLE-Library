@@ -1,8 +1,6 @@
 package me.czvn.blelibrary.utils;
 
 
-import me.czvn.blelibrary.interfaces.IReceiver;
-
 /**
  * Created by andy on 2016/1/13.
  *
@@ -47,4 +45,7 @@ public final class MsgReceiver {
 
     }
 
+    public interface IReceiver {
+        void receiveMessage(String msg);
+    }
 }

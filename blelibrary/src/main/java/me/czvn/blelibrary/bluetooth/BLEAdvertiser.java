@@ -12,8 +12,6 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
-import me.czvn.blelibrary.interfaces.IAdvertiseResultListener;
-
 /**
  * Created by andy on 2016/1/13.
  * 对bluetoothLeAdvertiser进行了封装
@@ -126,4 +124,18 @@ public final class BLEAdvertiser {
         advertiseData = dataBuilder.build();
         prepared = true;
     }
+
+    public interface IAdvertiseResultListener {
+        /**
+         * 这个方法会在广播成功时调用
+         */
+        void onAdvertiseSuccess();
+
+        /**
+         * 这个方法会在广播失败时调用
+         * @param errorCode 请查阅AdvertiseCallback的API
+         */
+        void onAdvertiseFailed(int errorCode);
+    }
+
 }

@@ -12,8 +12,6 @@ import android.content.Context;
 import android.os.ParcelUuid;
 import android.util.Log;
 
-import me.czvn.blelibrary.interfaces.IScanResultListener;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +54,7 @@ public final class BLEScanner {
     /**
      * 开始扫描周围的设备
      *
-     * @return 开始扫描成功返回true,否则返回false
+     * @return 开始扫描成功返回true, 否则返回false
      */
     public boolean startScan() {
         Context context = contextWeakReference.get();
@@ -122,4 +120,22 @@ public final class BLEScanner {
         filters.add(new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(BLEProfile.UUID_SERVICE)).build());
         scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
     }
+
+    public interface IScanResultListener {
+        /**
+         * 这个方法会在成功接收到扫描结果时调用
+         *
+         * @param deviceName    设备名称
+         * @param deviceAddress 设备地址
+         */
+        void onResultReceived(String deviceName, String deviceAddress);
+
+        /**
+         * 这个方法会在扫描失败时调用，
+         *
+         * @param errorCode 请查阅ScanCallback类的API
+         */
+        void onScanFailed(int errorCode);
+    }
+
 }

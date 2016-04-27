@@ -11,9 +11,6 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
 
-import me.czvn.blelibrary.interfaces.IBLECallback;
-import me.czvn.blelibrary.interfaces.IReceiver;
-import me.czvn.blelibrary.interfaces.ISender;
 import me.czvn.blelibrary.utils.MsgQueue;
 import me.czvn.blelibrary.utils.MsgReceiver;
 import me.czvn.blelibrary.utils.MsgSender;
@@ -53,14 +50,14 @@ public final class BLEClient {
         contextWeakReference=new WeakReference<>(mContext);
         this.ibleCallback = IBLECallback;
         connected = false;
-        msgSender = new MsgSender(new ISender() {
+        msgSender = new MsgSender(new MsgSender.ISender() {
             @Override
             public void inputData(byte[] bytes) {
                 msgQueue.enQueue(Arrays.copyOf(bytes,bytes.length));
                 startWrite();
             }
         });
-        msgReceiver = new MsgReceiver(new IReceiver() {
+        msgReceiver = new MsgReceiver(new MsgReceiver.IReceiver() {
             @Override
             public void receiveMessage(String msg) {
                 ibleCallback.onMessageReceived(msg);
