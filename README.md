@@ -9,6 +9,7 @@ This project includes two modules.It makes two Android Device to communicate wit
 * One as Peripheral by click "StartGattServer", maybe  you should click "TestAdvertise" to make it works well.
 * And the other as Central by click "Scan" to scan the Peripherals, and then you can click the result to connect the Peripherals.
 * After the toast "ConnectSuccess", you can send Message.
+
 ------
 
 #Android BLE Library
