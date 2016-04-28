@@ -1,21 +1,1 @@
-# Android-BLE-Demo
-
-使用Android BLE的API实现两台Android机器的通讯，使用lollipop之后的API
-
-## 功能
-
-*   使用BLE进行通讯
-*   这个Demo仅演示了传输文本信息
-*   BLE通讯模块封装在BleLibrary下
-
-## 用法
-
-*   先测试是否支持BLE广播
-*   再启动GattServer
-*   另一台设备进行扫描
-*   点击ListView连接
-*   可以收发消息
-
-## 相关
-
-*   [相关博客](http://czvn.me/blog/code/android/54)
+# Android-BLE-Demo && Android BLE LibraryThis project includes two modules.It makes two Android Device to communicate with Bluetooth Low Energy. It can only run in  Lolipop devices(API 21+).------#Demo Module##Usages* Need two Android Device.* One as Peripheral by click "StartGattServer", maybe  you should click "TestAdvertise" to make it works well.* And the other as Central by click "Scan" to scan the Peripherals, and then you can click the result to connect the Peripherals.* After the toast "ConnectSuccess", you can send Message.#Android BLE Library##InstallationYou can get the compiled library on [Jcenter](https://bintray.com/czvn/maven/blelibrary/view).Throw this in your `build.gradle `.```compile 'me.czvn:blelibrary:1.0.0'```##Usages### As Peripheral* Start Advertise```BLEAdvertiser bleAdvertiser = BLEAdvertiser.getInstance(context, BLEAdvertiser.IAdvertiseResultListener);bleAdvertiser.startAdvertise();```* Start GattServer```BLEServer bleServer=BLEServer.getInstance(context, IBLECallback);bleServer.startGattServer();```* Send Message```bleServer.sendMsg(String msg);```###As Central* Start Scan```BLEScanner bleScanner=BLEScanner.getInstance(context, BLEScanner.IScanResultListener);bleScanner.startScan();```* Connect```BLEClient bleClient=new BLEClient(context,IBLECallback);bleClient.startConnect(String address);```* Send Message```bleClient.sendMsg(String msg);```##Planning* Change the `sendMsg(String msg)` to `sendData(byte[] data)` License------    Copyright 2015 Andy Liao.    Licensed under the Apache License, Version 2.0 (the "License");    you may not use this file except in compliance with the License.    You may obtain a copy of the License at       http://www.apache.org/licenses/LICENSE-2.0    Unless required by applicable law or agreed to in writing, software    distributed under the License is distributed on an "AS IS" BASIS,    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    See the License for the specific language governing permissions and    limitations under the License.
