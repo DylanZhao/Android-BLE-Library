@@ -96,13 +96,13 @@ public final class BLEServer {
     }
 
     /**
-     * 发送消息给client
+     * 发送数据给client
      *
-     * @param msg 要发送的消息
+     * @param data 要发送的数据
      */
-    public void sendMsg(String msg) {
+    public void sendData(byte[] data) {
         if (connected) {
-            msgSender.sendMessage(msg);
+            msgSender.sendMessage(data);
         }
     }
 
@@ -128,8 +128,8 @@ public final class BLEServer {
         msgReceiver = new MsgReceiver(new MsgReceiver.IReceiver() {
             //String从这里整合过来
             @Override
-            public void receiveMessage(String msg) {
-                callback.onMessageReceived(msg);
+            public void receiveData(byte[] data) {
+                callback.onMessageReceived(data);
             }
         });
         prepared = false;

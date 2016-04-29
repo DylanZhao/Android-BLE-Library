@@ -1,9 +1,10 @@
 package me.czvn.blelibrary.utils;
 
 
+import java.util.Arrays;
+
 /**
  * Created by andy on 2016/1/13.
- *
  */
 public final class MsgReceiver {
     private static final String TAG = MsgReceiver.class.getSimpleName();
@@ -37,8 +38,7 @@ public final class MsgReceiver {
             nowLength += bytes.length;
             totalBytes = MsgCommonUtil.merge(totalBytes, bytes);
             if (nowLength >= length) {
-                result = new String(totalBytes);
-                receiver.receiveMessage(result);
+                receiver.receiveData(Arrays.copyOf(totalBytes, totalBytes.length));
                 init();
             }
         }
@@ -46,6 +46,6 @@ public final class MsgReceiver {
     }
 
     public interface IReceiver {
-        void receiveMessage(String msg);
+        void receiveData(byte[] data);
     }
 }

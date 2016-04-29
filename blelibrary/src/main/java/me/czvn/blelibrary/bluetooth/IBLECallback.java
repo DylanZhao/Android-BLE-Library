@@ -16,8 +16,8 @@ public interface IBLECallback {
     void onDisconnected();
 
     /**
-     * 此方法会在收到消息时调用
-     * @param msg 收到的消息
+     * 此方法会在收到数据时调用
+     * @param data 收到的数据
      */
-    void onMessageReceived(String msg);
+    void onMessageReceived(byte[] data);
 }

@@ -136,11 +136,11 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
                 }
                 String msg = etMsg.getText().toString();
                 if (connectType == ConnectType.CENTRAL) {
-                    bleClient.sendMsg(msg);
+                    bleClient.sendData(msg.getBytes());
 
                 }
                 if (connectType == ConnectType.PERIPHERAL) {
-                    bleServer.sendMsg(msg);
+                    bleServer.sendData(msg.getBytes());
                 }
                 msgList.add(new MsgData(msg));
                 chatListAdapter.notifyDataSetChanged();
@@ -223,8 +223,8 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     }
 
     @Override
-    public void onMessageReceived(String msg) {
-        msgList.add(new MsgData(msg));
+    public void onMessageReceived(byte[] data) {
+        msgList.add(new MsgData(new String(data)));
         mHandler.sendEmptyMessage(MyHandler.REFRESH_CHAT_LIST);
     }
 

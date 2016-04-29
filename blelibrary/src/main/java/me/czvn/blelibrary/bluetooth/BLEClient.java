@@ -59,8 +59,8 @@ public final class BLEClient {
         });
         msgReceiver = new MsgReceiver(new MsgReceiver.IReceiver() {
             @Override
-            public void receiveMessage(String msg) {
-                ibleCallback.onMessageReceived(msg);
+            public void receiveData(byte[] data) {
+                ibleCallback.onMessageReceived(data);
             }
         });
         msgQueue = new MsgQueue<>();
@@ -103,13 +103,13 @@ public final class BLEClient {
 
 
     /**
-     * 发送消息
+     * 发送消数据
      *
-     * @param msg 要发送的消息
+     * @param data 要发送的数据
      */
-    public void sendMsg(String msg) {
+    public void sendData(byte[] data) {
         if (connected) {
-            msgSender.sendMessage(msg);
+            msgSender.sendMessage(data);
         }
     }
 
