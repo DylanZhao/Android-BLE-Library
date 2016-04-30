@@ -74,8 +74,7 @@ bleClient.sendData(byte[] data);
 
 ```
 
-##Planning
-* Change the `sendMsg(String msg)` to `sendData(byte[] data)` 
+
 
 License
 ------
