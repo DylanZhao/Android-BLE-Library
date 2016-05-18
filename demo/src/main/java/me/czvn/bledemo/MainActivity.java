@@ -1,11 +1,17 @@
 package me.czvn.bledemo;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +44,9 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     public static final String TAG = MainActivity.class.getSimpleName();
     public static final boolean LOG_DEBUG = BuildConfig.DEBUG;
     public static final int REQUEST_ENABLE_BLUETOOTH = 15;//请求打开蓝牙
+    public static final int REQUEST_PERMISSION = 18;//请求Android M的权限
     public static final int SCAN_DURATION = 10000;//扫描时长
+
 
     private Button btnStartServer;
     private Button btnStartScan;
@@ -105,46 +113,19 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
         btnStartServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bleClient.stopConnect();
-                bleScanner.stopScan();
-                bleServer.startGattServer();
-                bleAdvertiser.startAdvertise();
-                connectType = ConnectType.PERIPHERAL;
+                startServer();
             }
         });
         btnStartScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bleAdvertiser.stopAdvertise();
-                bleServer.stopGattServer();
-                bleScanner.startScan();
-                connectType = ConnectType.CENTRAL;
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        bleScanner.stopScan();
-                    }
-                }, SCAN_DURATION);
+                startScan();
             }
         });
         btnSendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!connected) {
-                    makeToast(MainActivity.this.getString(R.string.not_connected));
-                    return;
-                }
-                String msg = etMsg.getText().toString();
-                if (connectType == ConnectType.CENTRAL) {
-                    bleClient.sendData(msg.getBytes());
-
-                }
-                if (connectType == ConnectType.PERIPHERAL) {
-                    bleServer.sendData(msg.getBytes());
-                }
-                msgList.add(new MsgData(msg));
-                chatListAdapter.notifyDataSetChanged();
-                etMsg.setText("");
+                sendMsg();
             }
         });
         listScanResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -191,6 +172,64 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     }
 
 
+    private void startServer() {
+        bleClient.stopConnect();
+        bleScanner.stopScan();
+        bleServer.startGattServer();
+        bleAdvertiser.startAdvertise();
+        connectType = ConnectType.PERIPHERAL;
+    }
+
+    private void startScan() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (MainActivity.this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.permission_request_title);
+                builder.setMessage(R.string.permission_request_content);
+                builder.setPositiveButton(R.string.confirm, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION);
+                        }
+                    }
+                });
+                builder.show();
+            }
+        }
+        bleAdvertiser.stopAdvertise();
+        bleServer.stopGattServer();
+        bleScanner.startScan();
+        connectType = ConnectType.CENTRAL;
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bleScanner.stopScan();
+            }
+        }, SCAN_DURATION);
+
+    }
+
+    private void sendMsg() {
+        if (!connected) {
+            makeToast(MainActivity.this.getString(R.string.not_connected));
+            return;
+        }
+        String msg = etMsg.getText().toString();
+        if (connectType == ConnectType.CENTRAL) {
+            bleClient.sendData(msg.getBytes());
+
+        }
+        if (connectType == ConnectType.PERIPHERAL) {
+            bleServer.sendData(msg.getBytes());
+        }
+        msgList.add(new MsgData(msg));
+        chatListAdapter.notifyDataSetChanged();
+        etMsg.setText("");
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -211,6 +250,21 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.i(TAG, "Android M permission get");
+            } else {
+                Log.e(TAG, "Android M permission failed");
+                Toast.makeText(this, R.string.permission_request_failed, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
     public void onConnected() {
         connected = true;
         makeToast(getString(R.string.connected));
@@ -223,7 +277,7 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     }
 
     @Override
-    public void onMessageReceived(byte[] data) {
+    public void onDataReceived(byte[] data) {
         msgList.add(new MsgData(new String(data)));
         mHandler.sendEmptyMessage(MyHandler.REFRESH_CHAT_LIST);
     }

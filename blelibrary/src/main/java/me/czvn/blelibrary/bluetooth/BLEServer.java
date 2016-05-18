@@ -129,7 +129,7 @@ public final class BLEServer {
             //String从这里整合过来
             @Override
             public void receiveData(byte[] data) {
-                callback.onMessageReceived(data);
+                callback.onDataReceived(data);
             }
         });
         prepared = false;

@@ -35,6 +35,7 @@ public final class BLEAdvertiser {
     /**
      * 单例模式
      *
+     *
      * @param context  context引用
      * @param listener 广播结果的监听
      * @return BLEAdvertiser的实例

@@ -4,6 +4,7 @@
     <string name="startScan">开始扫描</string>
     <string name="send">发送</string>
     <string name="checkAdvertise">测试BLE广播</string>
+    <string name="confirm">确定</string>
 
     <!--提示区域-->
     <string name="click_to_client">扫描结果:（点击设备可以连接）</string>
@@ -12,5 +13,8 @@
     <string name="not_connected">未连接</string>
     <string name="advertise_not_support">这台设备不支持BLE广播</string>
     <string name="advertise_support">这台设备支持BLE广播</string>
-
+    <string name="permission_request_title">该功能需要使用位置权限</string>
+    <string name="permission_request_content">请授予该权限</string>
+    <string name="permission_request_failed">不给我权限我就不陪你玩了 88~</string>
+    
 </resources>

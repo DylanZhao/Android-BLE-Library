@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import me.czvn.blelibrary.utils.MsgQueue;
@@ -60,7 +61,7 @@ public final class BLEClient {
         msgReceiver = new MsgReceiver(new MsgReceiver.IReceiver() {
             @Override
             public void receiveData(byte[] data) {
-                ibleCallback.onMessageReceived(data);
+                ibleCallback.onDataReceived(data);
             }
         });
         msgQueue = new MsgQueue<>();

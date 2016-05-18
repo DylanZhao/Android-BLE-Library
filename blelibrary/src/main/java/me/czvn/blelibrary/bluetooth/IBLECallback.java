@@ -19,5 +19,5 @@ public interface IBLECallback {
      * 此方法会在收到数据时调用
      * @param data 收到的数据
      */
-    void onMessageReceived(byte[] data);
+    void onDataReceived(byte[] data);
 }
