@@ -58,6 +58,7 @@ BLEScanner bleScanner=BLEScanner.getInstance(context, BLEScanner.IScanResultList
 
 bleScanner.startScan();
 ```
+On Android M device,you need required the `ACCESS_COARSE_LOCATION` permission before the scan;
 * Connect
 
 
