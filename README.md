@@ -54,7 +54,8 @@ BLEScanner bleScanner=BLEScanner.getInstance(context, BLEScanner.IScanResultList
 
 bleScanner.startScan();
 ```
-On Android M device,you need required the `ACCESS_COARSE_LOCATION` permission before the scan;
+在Android M的设备上扫描之前需要先请求运行时权限`ACCESS_COARSE_LOCATION`;
+
 * 连接
 
 
@@ -133,7 +134,7 @@ BLEScanner bleScanner=BLEScanner.getInstance(context, BLEScanner.IScanResultList
 
 bleScanner.startScan();
 ```
-在Android M的设备上扫描之前需要先请求运行时权限`ACCESS_COARSE_LOCATION`;
+On Android M device,you need required the `ACCESS_COARSE_LOCATION` permission before the scan;
 * Connect
 
 
