@@ -45,7 +45,7 @@ bleServer.startGattServer();
 bleServer.sendData(byte[] data);
 ```
 
-###As Central
+###作为 Central
 * 扫描周围的Peripheral
 
 
