@@ -1,5 +1,80 @@
-# Android-BLE-Demo && Android BLE Library
-This project includes two modules.It makes two Android Device to communicate with Bluetooth Low Energy. It can only run in  Lolipop devices(API 21+).
+#Android BLE Library
+对Android的蓝牙BLE相关API的简单封装，以实现两台Android设备通过蓝牙BLE来交换数据。仅支持5.0以上的系统。
+
+======
+
+#Demo模块
+两台Android设备，其中一台启动GattServer（需要先测试是否支持BLE广播），另外一台设备点击扫描即可在扫描结果中看到GattServer，点击连接之后可以互相发送文本消息。
+
+------
+
+#Android BLE Library
+##引入依赖
+You can get the compiled library on [Jcenter](https://bintray.com/czvn/maven/blelibrary/view).
+
+在`build.gradle `中添加一行依赖
+
+
+```
+compile 'me.czvn:blelibrary:1.1.0'
+```
+
+##用法
+### 作为 Peripheral
+* 开启BLE广播
+
+
+```
+BLEAdvertiser bleAdvertiser = BLEAdvertiser.getInstance(context, BLEAdvertiser.IAdvertiseResultListener);
+
+bleAdvertiser.startAdvertise();
+```
+
+
+* 开启GattServer
+
+```
+BLEServer bleServer=BLEServer.getInstance(context, IBLECallback);
+
+bleServer.startGattServer();
+```
+* 发送数据
+
+
+```
+bleServer.sendData(byte[] data);
+```
+
+###As Central
+* 扫描周围的Peripheral
+
+
+```
+BLEScanner bleScanner=BLEScanner.getInstance(context, BLEScanner.IScanResultListener);
+
+bleScanner.startScan();
+```
+On Android M device,you need required the `ACCESS_COARSE_LOCATION` permission before the scan;
+* 连接
+
+
+```
+BLEClient bleClient=new BLEClient(context,IBLECallback);
+
+bleClient.startConnect(String address);
+```
+
+* 发送数据
+
+```
+bleClient.sendData(byte[] data);
+
+```
+
+------
+
+#Android BLE Library
+A simple wrapper for Android bluetooth low energy API.It makes two Android Device to communicate with Bluetooth Low Energy. It can only run in  Lolipop devices(API 21+).
 
 ------
 
