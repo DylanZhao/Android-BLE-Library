@@ -2,6 +2,7 @@ package me.czvn.blelibrary.utils;
 
 /**
  * Created by andy on 2016/1/13.
+ * 将比较大的数据拆分成蓝牙BLE能发送的小数据包
  */
 public final class MsgSender {
     private static final int DEFAULT_SIZE = 20;
@@ -27,18 +28,18 @@ public final class MsgSender {
 
         sender.inputData(MsgCommonUtil.goBytes(length));
         for (int i = 0; i < counter; i++) {
-            for (int j = 0; j < buffer.length; j++) {
-                buffer[j] = data[i * size + j];
-            }
+            System.arraycopy(data, i * size, buffer, 0, buffer.length);
             sender.inputData(buffer);
         }
-        for (int i = 0; i < rests.length; i++) {
-            rests[i] = data[i + counter * size];
-        }
+        System.arraycopy(data, counter * size, rests, 0, rests.length);
         sender.inputData(rests);
     }
 
     public interface ISender {
+        /**
+         * 该方法将拆分的数据发送出去
+         * @param bytes 拆分后的数据
+         */
         void inputData(byte[] bytes);
     }
 }

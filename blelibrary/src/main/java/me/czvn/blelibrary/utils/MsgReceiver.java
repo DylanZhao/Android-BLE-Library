@@ -5,15 +5,14 @@ import java.util.Arrays;
 
 /**
  * Created by andy on 2016/1/13.
+ * 将拆分的数据整合在一起
  */
 public final class MsgReceiver {
-    private static final String TAG = MsgReceiver.class.getSimpleName();
 
     private boolean sending;
     private int length;
     private int nowLength;
     private byte[] totalBytes;
-    private String result;
     private IReceiver receiver;
 
 
@@ -27,7 +26,6 @@ public final class MsgReceiver {
         length = 0;
         nowLength = 0;
         totalBytes = new byte[0];
-        result = null;
     }
 
     public void outputData(byte[] bytes) {
@@ -46,6 +44,10 @@ public final class MsgReceiver {
     }
 
     public interface IReceiver {
+        /**
+         * 接收整合后的数据
+         * @param data 整合后的数据
+         */
         void receiveData(byte[] data);
     }
 }
