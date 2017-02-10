@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -70,7 +68,6 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     private ConnectType connectType;
     private boolean connected;
 
-    private MyHandler mHandler;
 
 
     @Override
@@ -95,7 +92,6 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
         chatListAdapter = new ChatListAdapter(msgList, this);
         scanListAdapter = new ScanListAdapter(scanList, this);
         connected = false;
-        mHandler = new MyHandler();
     }
 
     private void initViews() {
@@ -105,7 +101,8 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
         btnCheckAdvertise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter().isMultipleAdvertisementSupported() ?
+                String msg = ((BluetoothManager) getSystemService(BLUETOOTH_SERVICE)).getAdapter()
+                        .isMultipleAdvertisementSupported() ?
                         getString(R.string.advertise_support) : getString(R.string.advertise_not_support);
                 makeToast(msg);
             }
@@ -159,7 +156,7 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
             @Override
             public void onResultReceived(String deviceName, String deviceAddress) {
                 scanList.add(new ScanData(deviceName, deviceAddress));
-                mHandler.sendEmptyMessage(MyHandler.REFRESH_SCAN_LIST);
+                refreshScanListView();
             }
 
             @Override
@@ -202,7 +199,7 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
         bleServer.stopGattServer();
         bleScanner.startScan();
         connectType = ConnectType.CENTRAL;
-        mHandler.postDelayed(new Runnable() {
+        btnStartScan.postDelayed(new Runnable() {
             @Override
             public void run() {
                 bleScanner.stopScan();
@@ -240,13 +237,11 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     @Override
     protected void onResume() {
         super.onResume();
-        mHandler.attach(chatListAdapter, scanListAdapter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandler.detach();
     }
 
     @Override
@@ -279,7 +274,7 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
     @Override
     public void onDataReceived(byte[] data) {
         msgList.add(new MsgData(new String(data)));
-        mHandler.sendEmptyMessage(MyHandler.REFRESH_CHAT_LIST);
+        refreshMsgListView();
     }
 
 
@@ -301,43 +296,24 @@ public final class MainActivity extends AppCompatActivity implements IBLECallbac
 
     }
 
-    //Handler来刷新UI
-    private static class MyHandler extends Handler {
-        //可以使用runOnUiThread或者持有View使用View.post来简化代码
-        public static final int REFRESH_SCAN_LIST = 250;
-        public static final int REFRESH_CHAT_LIST = 38;
+   private void refreshScanListView(){
+       runOnUiThread(new Runnable() {
+           @Override
+           public void run() {
+               scanListAdapter.notifyDataSetChanged();
+           }
+       });
+   }
 
-        private BaseAdapter chatAdapter;
-        private BaseAdapter scanAdapter;
-
-        public void attach(BaseAdapter chatAdapter, BaseAdapter scanAdapter) {
-            this.chatAdapter = chatAdapter;
-            this.scanAdapter = scanAdapter;
-        }
-
-        public void detach() {
-            chatAdapter = null;
-            scanAdapter = null;
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == REFRESH_CHAT_LIST) {
-                if (chatAdapter != null) {
-                    chatAdapter.notifyDataSetChanged();
-                }
+    private void refreshMsgListView(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                chatListAdapter.notifyDataSetChanged();
             }
-            if (msg.what == REFRESH_SCAN_LIST) {
-                if (scanAdapter != null) {
-                    scanAdapter.notifyDataSetChanged();
-                }
-            }
+        });
 
-
-        }
     }
-
     //显示通知
     private void makeToast(final String toast) {
         runOnUiThread(new Runnable() {

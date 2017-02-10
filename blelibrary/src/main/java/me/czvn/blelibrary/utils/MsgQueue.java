@@ -18,14 +18,14 @@ public final class MsgQueue<T> {
     }
 
     public void enQueue(T item) {
-        Node oldlast = last;
+        Node oldLast = last;
         last = new Node();
         last.item = item;
         last.next = null;
         if (isEmpty()) {
             first = last;
         } else {
-            oldlast.next = last;
+            oldLast.next = last;
         }
         length++;
 
