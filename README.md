@@ -1,15 +1,15 @@
-#Android BLE Library
+# Android BLE Library
 对Android的蓝牙BLE相关API的简单封装，以实现两台Android设备通过蓝牙BLE来交换数据。仅支持5.0以上的系统。
 
 ======
 
-#Demo模块
+# Demo模块
 两台Android设备，其中一台启动GattServer（需要先测试是否支持BLE广播），另外一台设备点击扫描即可在扫描结果中看到GattServer，点击连接之后可以互相发送文本消息。
 
 ------
 
-#Android BLE Library
-##引入依赖
+# Android BLE Library
+## 引入依赖
 You can get the compiled library on [Jcenter](https://bintray.com/czvn/maven/blelibrary/view).
 
 在`build.gradle `中添加一行依赖
@@ -19,7 +19,7 @@ You can get the compiled library on [Jcenter](https://bintray.com/czvn/maven/ble
 compile 'me.czvn:blelibrary:1.1.0'
 ```
 
-##用法
+## 用法
 ### 作为 Peripheral
 * 开启BLE广播
 
@@ -45,7 +45,7 @@ bleServer.startGattServer();
 bleServer.sendData(byte[] data);
 ```
 
-###作为 Central
+### 作为 Central
 * 扫描周围的Peripheral
 
 
@@ -74,13 +74,13 @@ bleClient.sendData(byte[] data);
 
 ------
 
-#Android BLE Library
+# Android BLE Library
 A simple wrapper for Android bluetooth low energy API.It makes two Android Device to communicate with Bluetooth Low Energy. It can only run in  Lolipop devices(API 21+).
 
 ------
 
-#Demo Module
-##Usages
+# Demo Module
+## Usages
 * Need two Android Device.
 * One as Peripheral by click "StartGattServer", maybe  you should click "TestAdvertise" to make it works well.
 * And the other device as Central by click "Scan" to scan the Peripherals, and then you can click the result to connect the Peripherals.
@@ -88,8 +88,8 @@ A simple wrapper for Android bluetooth low energy API.It makes two Android Devic
 
 ------
 
-#Android BLE Library
-##Installation
+# Android BLE Library
+## Installation
 You can get the compiled library on [Jcenter](https://bintray.com/czvn/maven/blelibrary/view).
 
 Throw this in your `build.gradle `.
@@ -99,7 +99,7 @@ Throw this in your `build.gradle `.
 compile 'me.czvn:blelibrary:1.1.0'
 ```
 
-##Usages
+## Usages
 ### As Peripheral
 * Start Advertise
 
@@ -125,7 +125,7 @@ bleServer.startGattServer();
 bleServer.sendData(byte[] data);
 ```
 
-###As Central
+### As Central
 * Start Scan
 
 
