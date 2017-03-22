@@ -1,7 +1,7 @@
 # Android BLE Library
 对Android的蓝牙BLE相关API的简单封装，以实现两台Android设备通过蓝牙BLE来交换数据。仅支持5.0以上的系统。
 
-======
+------
 
 # Demo模块
 两台Android设备，其中一台启动GattServer（需要先测试是否支持BLE广播），另外一台设备点击扫描即可在扫描结果中看到GattServer，点击连接之后可以互相发送文本消息。
