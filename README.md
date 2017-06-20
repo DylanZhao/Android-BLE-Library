@@ -9,6 +9,9 @@
 ------
 
 # Android BLE Library
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)]()
+[![GitHub release](https://img.shields.io/badge/release-1.1.0-brightgreen.svg)]()
+[![author](https://img.shields.io/badge/author-czvn-orange.svg)](https://github.com/czvn)
 ## 引入依赖
 You can get the compiled library on [Jcenter](https://bintray.com/czvn/maven/blelibrary/view).
 
